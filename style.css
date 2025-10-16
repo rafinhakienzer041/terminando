@@ -1,0 +1,1898 @@
+/* ===================== */
+/* ESTILO GLOBAL */
+/* ===================== */
+
+/* Faz o html e o body ocuparem toda a tela */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling for anchor links */
+html { scroll-behavior: smooth; }
+
+/* CSS variables for theme and admin panel */
+:root {
+  --brand-1: #ffcc00; /* amarelo */
+  --bg-dark: #0b0b0b;
+  --muted: #666;
+  --surface: #ffffff;
+  --danger: #c62828;
+  --panel-radius: 10px;
+  --shadow-1: 0 8px 28px rgba(0,0,0,0.18);
+  --glass: rgba(255,255,255,0.9);
+}
+
+
+/* Tornar imagens e mídias responsivas por padrão */
+img, picture, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ocultar o botão flutuante do carrinho no desktop por padrão */
+#mobile-cart-toggle { display: none; }
+
+/* Fazer o body ser um flex vertical */
+/* Make body a full-height flex column so footer can stick to bottom when content is short */
+body {
+  display: flex;
+  flex-direction: column;
+  /* Fundo com padrão repetido (mais discreto) */
+  background: url('imagens/fundo-fastfood-pattern.png') repeat;
+  background-size: 300px;
+  background-color: #504a4a;
+  background-blend-mode: multiply;
+  color: #e2d030;
+  font-size: 16px; /* base para rem */
+}
+
+/* Overlay layer: adiciona uma camada entre a imagem de fundo e o conteúdo
+   para melhorar contraste e legibilidade sem alterar o HTML. */
+body {
+  position: relative; /* cria contexto para o overlay pseudo-element */
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* Ajuste a opacidade conforme precisar: 0.35-0.55 são bons pontos iniciais.
+     Se quiser um overlay mais claro troque para rgba(255,255,255,0.6). */
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 0; /* fica abaixo dos elementos com z-index >= 1 */
+}
+
+/* Garantir que elementos principais fiquem acima do overlay.
+   Use um z-index baixo por padrão e promova apenas o header para uma
+   camada superior quando necessário (evita que #produtos sobreponha o nav). */
+header, main, footer, #tela-inicial, #produtos, #carrinho, #relatorios, .inicio-conteudo, #confirm-modal, #splash {
+  position: relative;
+  z-index: 1;
+}
+
+/* Classe utilitária para painéis que precisam de fundo claro para leitura */
+.readable-panel {
+  background: rgba(255,255,255,0.94);
+  color: #111;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+}
+
+/* Admin panel specific styles (relatorios) */
+.admin-panel {
+  padding: 18px;
+  background: linear-gradient(180deg, var(--glass), #fff);
+  border-radius: var(--panel-radius);
+}
+.admin-header .admin-sub { color: var(--muted); margin-top:6px; }
+.admin-toolbar { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px; }
+.admin-toolbar .filters { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.label-inline { font-weight:600; color:var(--muted); margin-right:6px; }
+.input-small { padding:6px 8px; border-radius:6px; border:1px solid #ddd; }
+.input-medium { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
+.input-full { padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:100%; }
+.input-search { padding:8px 12px; border-radius:8px; border:1px solid #ddd; min-width:240px; }
+.actions { display:flex; gap:8px; align-items:center; }
+.exports { display:flex; gap:6px; }
+
+.btn { background:transparent; border:1px solid #ddd; color:#111; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600; }
+.btn:hover { box-shadow: var(--shadow-1); transform: translateY(-2px); }
+.btn.primary { background: var(--brand-1); color: #111; border-color: transparent; }
+.btn.danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+
+.admin-results { margin-top:12px; }
+.rel-summary { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.rel-total { font-size:1.15rem; font-weight:700; color:var(--bg-dark); }
+
+.table-scroll { overflow:auto; border-radius:8px; padding:6px; border:1px solid #eee; background:#fff; }
+.rel-table { width:100%; border-collapse:collapse; min-width:680px; }
+.rel-table th, .rel-table td { padding:10px 12px; border-bottom:1px solid #f3f3f3; }
+.rel-table thead th { background: var(--bg-dark); color: var(--brand-1); font-weight:700; position:sticky; top:0; }
+.rel-table tbody tr:hover { background: rgba(0,0,0,0.02); }
+.col-right { text-align:right; }
+.col-actions { width:120px; text-align:center; }
+
+.rel-chart { margin-top:12px; padding:12px; border-radius:8px; border:1px solid #eee; background:#fff; }
+.rel-history-wrap { margin-top:12px; }
+.rel-history > div { background:#fff; border-radius:8px; padding:10px; margin-bottom:8px; box-shadow:0 4px 10px rgba(0,0,0,0.04); }
+.rel-pagination { margin-top:8px; display:flex; gap:8px; align-items:center; }
+.rel-webhook { margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.rel-controls { margin-top:8px; display:flex; gap:12px; align-items:center; }
+
+/* Compact mode for small screens */
+@media (max-width: 520px) {
+  .admin-toolbar { flex-direction:column; align-items:stretch; }
+  .admin-toolbar .actions { justify-content:space-between; width:100%; }
+  .input-search { min-width:0; width:100%; }
+  .table-scroll { padding:6px; }
+  .rel-table { min-width: auto; font-size:0.92rem; }
+  .rel-table th, .rel-table td { padding:8px; }
+  .col-actions { width: auto; }
+  /* compact history cards */
+  .rel-history > div { padding:8px; font-size:0.95rem; }
+  /* modal for item list should fit mobile */
+  #rel-item-modal { inset: 6% 4%; }
+}
+
+/* Reduce visual noise and provide a compact mode toggle class */
+.compact .rel-table th, .compact .rel-table td { padding:6px; font-size:0.92rem; }
+
+/* ===================== */
+/* HEADER */
+/* ===================== */
+header {
+  background-color: rgba(0, 0, 0, 0.952);
+  text-align: center;
+  padding: 20px 10px;
+  /* ensure header is tall enough to contain centered logo and top-right badges without overlap */
+  
+  /*background-color: rgba(255, 0, 0, 0.8);*/
+  position: relative; /* context for absolutely positioned logo */
+  /* Elevate header above product area and status badges so the dropdown nav
+     and hamburger are always interactable. This value is slightly higher
+     than .status-badge (10120) but low enough to avoid interfering with
+     global modals that intentionally use very high z-index. */
+  z-index: 10130;
+}
+
+/* Cabeçalho responsivo: empilhar a nav em telas pequenas */
+header nav {
+  margin-top: 8px;
+}
+/* ocultar o botão hamburger por padrão (desktop) */
+#hamburger-btn { display: none; }
+/* status badges: desktop and mobile variants */
+#status-badge-desktop, #status-badge-mobile { font-weight: 700; color: inherit; }
+#status-badge-mobile { display: none; }
+@media (max-width: 600px) {
+  header { padding: 12px 10px; }
+  /* tornar o cabeçalho ligeiramente transparente no mobile para que o fundo do body apareça */
+  header { background-color: rgba(0,0,0,0.65); }
+  nav ul { display: block; text-align: center; }
+  nav ul li { display: block; margin: 6px 0; }
+
+  /* ocultar a nav principal por padrão em telas pequenas; será alternada via JS */
+  /* preparar o header para controles móveis posicionados de forma absoluta */
+  header { position: relative; }
+
+  /* ocultar a nav principal por padrão em telas pequenas; será alternada via JS */
+  #main-nav { display: none; }
+  /* mostrar o botão hamburger no mobile e movê-lo para a esquerda */
+  #hamburger-btn { display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; color: #fff; cursor: pointer; padding: 8px; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); z-index: 10010; }
+  /* show mobile badge and hide desktop badge on smaller screens */
+  #status-badge-desktop { display: none !important; }
+  #status-badge-mobile { display: inline-block !important; }
+  /* position mobile badge fixed to the top-right corner for easy visibility */
+  #status-badge-mobile {
+    position: fixed !important;
+    top: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 1px px;
+    border-radius: 8px;
+    z-index: 10120;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    font-size: 0.9rem;
+  }
+  /* ícone das três linhas (hamburger) */
+  .hamburger-lines { width: 22px; height: 2px; background: #fff; display: block; position: relative; }
+  .hamburger-lines::before, .hamburger-lines::after { content: ''; position: absolute; left: 0; width: 22px; height: 2px; background: #fff; }
+  .hamburger-lines::before { top: -7px; }
+  .hamburger-lines::after { top: 7px; }
+
+  /* quando a nav estiver aberta, #main-nav vira um dropdown vertical em largura total abaixo do header */
+  header.nav-open #main-nav {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    /* deixar o dropdown móvel semi-transparente para que a imagem de fundo do body apareça por baixo */
+    background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.65) 100%);
+    padding: 10px 0 14px 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 10005;
+  }
+  /* tornar a lista vertical e legível */
+  header.nav-open #main-nav li { display: block; margin: 8px 0; }
+  header.nav-open #main-nav a { display: inline-block; width: 100%; padding: 10px 18px; text-align: left; color: #fff; font-size: 1.05rem; font-weight: 600; }
+  /* garantir que o marcador da lista não esteja visível e que os links fiquem alinhados à esquerda */
+  header.nav-open #main-nav { text-align: left; }
+
+  /* animar o hamburger para um X quando aberto */
+  header.nav-open .hamburger-lines { background: transparent; }
+  header.nav-open .hamburger-lines::before { transform: rotate(45deg); top: 0; }
+  header.nav-open .hamburger-lines::after { transform: rotate(-45deg); top: 0; }
+}
+
+/* Shared status badge positioning and responsive sizing */
+.status-badge {
+  position: fixed;
+  top: clamp(10px, 2.2vw, 16px);
+  right: clamp(10px, 2.2vw, 18px);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: clamp(6px, 0.8vw, 10px) clamp(8px, 1.2vw, 14px);
+  border-radius: 10px;
+  z-index: 10120;
+  font-size: clamp(0.78rem, 1.4vw, 1rem);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+/* slightly different visual for desktop by default (overridden on small screens) */
+.status-badge#status-badge-desktop { background: rgba(0,0,0,0.7); color: #bfffe0; }
+.status-badge#status-badge-mobile { background: rgba(0,0,0,0.7); color: #bfffe0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .status-badge { animation: none !important; transition: none !important; }
+}
+
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ffcc00;
+}
+
+/* destacar levemente a aba do carrinho */
+.menu-item[data-category="carrinho"] {
+  position: relative;
+}
+.menu-item[data-category="carrinho"]::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 4px;
+  background: transparent;
+  transition: background 220ms;
+}
+
+/* Notificações (toast) */
+#toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 80px;
+  z-index: 10100;
+  pointer-events: none;
+}
+.toast-msg {
+  background: linear-gradient(90deg, rgba(0,0,0,0.9), rgba(20,20,20,0.95));
+  color: #ffeb9b;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-top: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  pointer-events: auto;
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Small toast variant for subtle confirmations */
+.toast-msg.small {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+}
+
+/* Controles de quantidade dentro do carrinho */
+.cart-qty {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.cart-qty button { padding: 6px 8px; font-weight: 700; }
+.cart-qty .qty { min-width: 26px; text-align: center; display: inline-block; }
+
+/* ===================== */
+/* MAIN (PRODUTOS + CARRINHO) */
+/* ===================== */
+main {
+  flex: 1; /* ocupa espaço entre header e footer */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 20px;
+  gap: 10px;
+}
+
+/* Fazer o layout principal se reorganizar graciosamente em viewports mais estreitos */
+@media (max-width: 1024px) {
+  main { flex-direction: column; align-items: stretch; }
+  #produtos, #carrinho { width: 100%; }
+}
+
+/* PRODUTOS */
+#produtos {
+  flex: 1 1 70%;
+  /* container que centraliza o conteúdo e fornece padding; a grid real fica em .cards-container */
+  display: block;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  min-height: auto; /* deixar a altura conforme o conteúdo */
+}
+
+/* Grid wrapper para os cartões; permite usar .cards-container dentro de #produtos */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+}
+
+/* garantir que os cartões de produto possam reduzir em telas muito pequenas */
+.produto { min-width: 120px; }
+
+.produto {
+  /* Softer, warmer card styling */
+  background: linear-gradient(180deg, #fff6d1 0%, #ffea7a 60%);
+  color: #111;
+  border-radius: 18px;
+  /* grid will control spacing; remover margin para evitar espaçamento duplicado */
+  margin: 0;
+  /* fazer o cartão ocupar toda a célula, com limite máximo para manter boa largura */
+  width: 100%;
+  max-width: 320px;
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(2,8,15,0.12);
+  transition: transform 220ms cubic-bezier(.22,.9,.26,1), box-shadow 220ms cubic-bezier(.22,.9,.26,1), background 240ms ease;
+}
+
+/* Ajustes responsivos: 2 colunas em tablet, 1 coluna em celular */
+@media (max-width: 1024px) {
+  .cards-container {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  #produtos { padding: 10px; }
+  .produto { max-width: none; /* ocupar todo o espaço disponível no celular */ }
+}
+
+.produto img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* Text hierarchy and alignment for product cards */
+.produto {
+  text-align: center; /* centralizar todo o conteúdo do card */
+}
+.produto h3 {
+  font-size: 1.15rem;
+  margin: 0.6rem 0 0.35rem;
+  color: #111;
+  font-weight: 700;
+}
+
+/* Section title shown above product grids (e.g. MACARRONADAS) */
+.section-title {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  color: #ffeb9b; /* light warm yellow to stand out on the dark background */
+  font-size: clamp(1.25rem, 1.6vw + 0.6rem, 2rem);
+  margin: 8px auto 14px; /* vertical spacing and center horizontally */
+  text-align: center; /* centralizar conforme solicitado */
+  padding-left: 0;
+  letter-spacing: 1px;
+  display: block;
+}
+
+/* garante espaço entre o título e o grid de produtos e centraliza o grid se necessário */
+.section-title + .cards-container {
+  margin-top: 6px;
+}
+
+/* Limit the visual width of the grid and title so they stay aligned and centered
+   even when #produtos has wide padding or the page is very wide. Adjust max-width
+   value if you want different column wrapping behavior. */
+.cards-container {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.section-title {
+  max-width: 1080px; /* match the grid width so title aligns with cards */
+}
+
+/* Inner wrapper to align title and grid together inside #produtos */
+.produtos-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+}
+
+/* Bebidas submenu and product list styles */
+.submenu-bebidas { display:flex; justify-content:center; gap:1rem; margin-bottom:1.25rem; }
+.categoria-btn { background-color: rgba(0,0,0,0.7); color: var(--brand-1); border: none; padding: 10px 18px; border-radius: 12px; cursor:pointer; font-weight:700; transition: background 180ms, color 180ms; }
+.categoria-btn:hover { background-color: var(--brand-1); color:#111; }
+.categoria-btn.ativo { background-color: var(--brand-1); color:#111; font-weight:800; }
+.lista-produtos { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
+.lista-produtos .produto { max-width:260px; }
+.produto .descricao {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+.produto .price {
+  font-weight: 800;
+  color: #111;
+  margin-top: 0.25rem;
+  margin-bottom: 0.6rem;
+}
+.produto .produto-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* Quantity badge shown on the card when item added */
+.card-qty {
+  display: inline-block;
+  min-width: 28px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  color: #111;
+  font-weight: 700;
+  text-align: center;
+  align-self: center;
+}
+
+/* Improved cart container styles (keeps IDs/classes used by script.js) */
+.cart-container {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  backdrop-filter: blur(12px) saturate(1.03);
+  -webkit-backdrop-filter: blur(12px) saturate(1.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 20px;
+  max-width: 420px;
+  margin: 18px auto;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(255,204,0,0.04);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.cart-container { animation: fadeInUp 0.5s ease both; }
+.cart-container:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.55), 0 6px 28px rgba(255,204,0,0.06); }
+.cart-container h2 { font-size: 1.28rem; margin-bottom: 10px; color: var(--brand-1); font-family: 'Playfair Display', serif; }
+.cart-body ul { list-style: none; padding: 0; margin: 0 0 8px 0; max-height: 240px; overflow:auto; }
+.cart-body ul li { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 6px; border-radius:8px; background: rgba(0,0,0,0.03); margin-bottom:6px; }
+.cart-body p { font-size: 1rem; margin: 8px 0; }
+.cart-total { font-weight: 800; color: #bfffe0; font-size: 1.06rem; }
+.cart-actions { display:flex; justify-content:center; gap:10px; margin-top:10px; }
+.btn-clear, .btn-whatsapp { padding:9px 14px; border-radius:10px; font-weight:700; cursor:pointer; border:none; display:inline-flex; gap:8px; align-items:center; }
+.btn-clear { background: rgba(0,0,0,0.45); color:#fff; border:1px solid rgba(255,255,255,0.04); }
+.btn-clear:hover { background: var(--danger); color:#fff; }
+.btn-whatsapp { background: linear-gradient(135deg,#25d366,#128c7e); color:#fff; box-shadow:0 8px 22px rgba(37,211,102,0.16); }
+.btn-whatsapp:hover { transform: scale(1.04); box-shadow:0 12px 34px rgba(37,211,102,0.26); }
+.trust-info { margin-top:14px; font-size:0.92rem; color:#e6e6e6; display:flex; gap:8px; align-items:center; justify-content:center; }
+.trust-info i { color: var(--brand-1); font-size:1.05rem; }
+
+/* Responsive: full width on small viewports with safe padding */
+@media (max-width: 600px) {
+  .cart-container { max-width: none; width: calc(100% - 28px); margin: 12px auto; padding: 14px; border-radius: 12px; }
+  .cart-body ul li { padding: 8px; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* button icons and text layout */
+.produto .produto-actions button { display: inline-flex; align-items: center; gap: 6px; }
+.produto .produto-actions .btn-text { display: inline-block; }
+
+/* small pop animation for add button */
+.adicionar.btn-anim {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 10px 28px rgba(15,139,74,0.18);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+/* Hover effect para foto do produto: leve zoom, elevação e ajuste de brilho/saturação
+   Usa transições para ser suave e respeita a preferência do usuário por reduzir movimento. */
+.produto {
+  position: relative;
+  overflow: hidden; /* garante que o zoom não vaze fora do cartão */
+}
+
+.produto img {
+  transition: transform 280ms cubic-bezier(.22,.9,.26,1), filter 280ms cubic-bezier(.22,.9,.26,1), box-shadow 280ms cubic-bezier(.22,.9,.26,1);
+  will-change: transform, filter;
+  display: block;
+}
+
+.produto:hover img {
+  transform: scale(1.04) translateY(-3px);
+  filter: brightness(1.03) saturate(1.04);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+/* ===================== ANIMAÇÕES ===================== */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes splashIn {
+  0% { opacity: 0; transform: scale(0.92); }
+  60% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Lightweight fade-in utility for entrance animation */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efeito de pulsação para o status (melhorado) */
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    opacity: 0.7;
+  }
+  100% {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    opacity: 1;
+  }
+}
+
+/* Quando está aberto */
+.aberto-agora {
+  color: #00ff66;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+/* Quando está fechado */
+.fechado-agora {
+  color: #ff4d4d;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+/* Additional visual effects for the status badges when explicitly marked aberto/fechado
+   Provides a soft glow, an outer pulsing ring and a stronger hover state to draw attention. */
+@keyframes ringPulseOpen {
+  0% { box-shadow: 0 0 0 0 rgba(0,255,120,0.40); }
+  60% { box-shadow: 0 0 0 12px rgba(0,255,120,0.00); }
+ 100% { box-shadow: 0 0 0 0 rgba(0,255,120,0.00); }
+}
+@keyframes ringPulseClosed {
+  0% { box-shadow: 0 0 0 0 rgba(255,80,80,0.36); }
+  60% { box-shadow: 0 0 0 12px rgba(255,80,80,0.00); }
+ 100% { box-shadow: 0 0 0 0 rgba(255,80,80,0.00); }
+}
+
+.status-badge.aberto-agora {
+  background: linear-gradient(135deg,#00d27a,#00a86b);
+  color: #042614;
+  border: 1px solid rgba(0,160,90,0.18);
+  box-shadow: 0 8px 22px rgba(0,160,90,0.14);
+  transform: translateZ(0);
+  animation: pulse 2s infinite;
+}
+.status-badge.aberto-agora::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: ringPulseOpen 2.4s infinite;
+}
+
+.status-badge.fechado-agora {
+  background: linear-gradient(135deg,#ff6b6b,#ff3b3b);
+  color: #330606;
+  border: 1px solid rgba(200,40,40,0.14);
+  box-shadow: 0 8px 22px rgba(200,40,40,0.12);
+  transform: translateZ(0);
+  animation: pulse 2s infinite;
+}
+.status-badge.fechado-agora::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: ringPulseClosed 2.4s infinite;
+}
+
+.status-badge.aberto-agora:hover, .status-badge.fechado-agora:hover {
+  transform: scale(1.04);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-badge.aberto-agora::after, .status-badge.fechado-agora::after { animation: none !important; }
+  .status-badge.aberto-agora, .status-badge.fechado-agora { animation: none !important; }
+}
+
+/* Also explicitly target the desktop and mobile badge IDs so either badge
+   receives the same visual treatment when JS toggles the state classes. */
+#status-badge-desktop.aberto-agora,
+#status-badge-mobile.aberto-agora {  
+  color: #042614;
+  border: 1px solid rgba(0,160,90,0.18);
+  box-shadow: 0 8px 22px rgba(0,160,90,0.14);
+  transform: translateZ(0);
+  animation: pulse 2s infinite;
+}
+#status-badge-desktop.aberto-agora::after,
+#status-badge-mobile.aberto-agora::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: ringPulseOpen 2.4s infinite;
+}
+
+#status-badge-desktop.fechado-agora,
+#status-badge-mobile.fechado-agora {  
+  color: #330606;
+  border: 1px solid rgba(200,40,40,0.14);
+  box-shadow: 0 8px 22px rgba(200,40,40,0.12);
+  transform: translateZ(0);
+  animation: pulse 2s infinite;
+}
+#status-badge-desktop.fechado-agora::after,
+#status-badge-mobile.fechado-agora::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  pointer-events: none;
+  animation: ringPulseClosed 2.4s infinite;
+}
+
+
+/* Ver Cardápio special hover/glow */
+#ver-cardapio { transition: transform 0.28s ease, box-shadow 0.28s ease; }
+#ver-cardapio:hover {
+  box-shadow: 0 0 15px 3px rgba(236, 236, 234, 0.5);
+  transform: scale(1.05);
+}
+
+/* Pulsing pulse for the main CTA button */
+#btn-cardapio { animation: pulseBtn 2.2s infinite; }
+
+@keyframes pulseBtn {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+@keyframes splashOut {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-12px) scale(0.98); }
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+/* animação de entrada do conteúdo inicial: ativada quando a classe .show é adicionada */
+.inicio-conteudo {
+  opacity: 0;
+  transform: translateY(12px);
+  /* transição de fallback caso os keyframes não sejam executados */
+  transition: opacity 700ms cubic-bezier(.22,.9,.26,1), transform 700ms cubic-bezier(.22,.9,.26,1);
+}
+.inicio-conteudo.show {
+  animation: fadeUp 700ms cubic-bezier(.22,.9,.26,1) 250ms both;
+  /* também garantir o estado final para o fallback */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* HERO / BANNER - first fold visual */
+.hero {
+  text-align: center;
+  padding: clamp(48px, 12vh, 140px) 20px;
+  /* banner image - lightweight local file expected */
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('chinez-removebg-preview.png') center/cover no-repeat;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero h1 { font-family: 'Playfair Display', serif; color: #ffd700; font-size: clamp(1.6rem, 4.4vw, 3rem); margin: 0 0 12px; }
+.hero p { color: #fff8d6; margin: 0 0 18px; font-size: clamp(1rem, 1.6vw, 1.2rem); }
+
+.btn-hero {
+  background: #ffd700;
+  color: #111;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: inline-block;
+  transition: transform 220ms ease, box-shadow 220ms ease, background-color 180ms ease;
+}
+.btn-hero:hover { background: #fff; transform: scale(1.05); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+
+/* TELA DE APRESENTAÇÃO (SPLASH) */
+#splash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #111 0%, #0b0b0b 100%);
+  z-index: 9999;
+}
+
+.splash-title {
+  color: #ffcc00;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: 1px;
+  animation: splashIn 700ms cubic-bezier(.22,.9,.26,1) both;
+}
+
+#splash.out .splash-title {
+  animation: splashOut 420ms ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #splash, .splash-title { animation: none !important; }
+}
+
+/* transições suaves para produtos e botões */
+.produto {
+  /* show close button when cart is open on mobile */
+  #carrinho.mobile-open #mobile-cart-close {
+    display: flex;
+    /* Forçar a posição dentro do painel amarelo (ignorar position:fixed inline aplicado pelo JS) */
+    position: absolute !important;
+    top: 10px;
+    right: 12px;
+  }
+
+  /* increase touch target on very small phones */
+  @media (max-width: 420px) {
+    #mobile-cart-close { width: 44px; height: 44px; top: 6px; right: 8px; }
+  }
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.produto:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(2,8,15,0.18);
+}
+
+#finalizar {
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+#finalizar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* RELATÓRIOS STYLES */
+#relatorios {
+  color: #111; /* inner content uses dark text on light cards */
+}
+#rel-table-container table th {
+  background: #111;
+  color: #ffcc00;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+#rel-table-container table td, #rel-table-container table th {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+#rel-table-container table tr:nth-child(even) td {
+  background: rgba(0,0,0,0.02);
+}
+#rel-table-container table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+#rel-chart { background: linear-gradient(180deg,#fff,#fff); }
+
+#rel-history div { background: #fff; border-radius:8px; padding:10px; margin-bottom:8px; box-shadow:0 4px 10px rgba(0,0,0,0.04); }
+#rel-history strong { color:#111; }
+#rel-history .rel-delete { background:#c62828; }
+
+/* Controls in reports */
+#relatorios button { background:#111; color:#ffcc00; border:1px solid rgba(0,0,0,0.06); }
+#relatorios button:hover { background:#222; color:#fff; }
+#rel-webhook-url { border:1px solid #ddd; }
+
+@media (max-width: 720px) {
+  #rel-chart { display:block; }
+  #rel-table-container table td { font-size:0.95rem; }
+}
+
+/* icons - uses Material Icons font */
+.mi { font-family: 'Material Icons'; font-weight: normal; font-style: normal; font-size: 18px; display:inline-block; vertical-align:middle; }
+
+/* Table row animation */
+@keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+#rel-table-container table tbody tr { animation: rowIn 260ms ease both; }
+
+/* Chart fade */
+#rel-chart canvas { opacity: 0; transform: translateY(6px); transition: opacity 420ms ease, transform 420ms ease; }
+#rel-chart.canvas-visible canvas { opacity: 1; transform: translateY(0); }
+
+/* Responsive layout for controls */
+#relatorios > div:first-of-type { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+/* Small helper for action icons */
+.action-icon { margin-right:6px; vertical-align:middle; }
+
+/* Prefira não animar imagens se usuário pedir redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  .produto img { transition: none !important; transform: none !important; }
+}
+
+
+/* BOTÕES: cor menos agressiva e hover mais sóbrio */
+button {
+  background-color: #b71c1c; /* tom de vermelho menos saturado */
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 220ms ease, transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+button:hover, button:focus {
+  background-color: #8e1515; /* vermelho mais escuro no hover */
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+}
+
+#limpar-carrinho {
+  background: #333;
+  color: #fff;
+}
+#limpar-carrinho:hover { background: #555; }
+
+/* CARRINHO */
+#carrinho {
+  flex: 0 0 25%;
+  background-color: #0a0a0a;
+  color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+  height: fit-content;
+}
+
+/* Mobile: minimized state to keep cart out of the way while filling confirmation form */
+@media (max-width: 350px) {
+  #carrinho.minimized {
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    right: auto;
+    width: calc(100% - 24px);
+    max-height: 64px; /* shrink to a small bar */
+    overflow: hidden;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10100;
+  }
+  /* When minimized, hide the cart's item list and keep only a brief summary */
+  #carrinho.minimized #itens-carrinho,
+  #carrinho.minimized .cart-qty,
+  #carrinho.minimized .produto {
+    display: none !important;
+  }
+  #carrinho.minimized h2 { font-size: 1rem; margin: 0; }
+  /* make the mobile close button still visible and positioned above the yellow bar */
+  #mobile-cart-close { display: flex; }
+}
+
+/* Modal overlay for confirm modal on mobile to ensure form is readable */
+@media (max-width:600px) {
+  #confirm-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10150;
+    background: rgba(0,0,0,0.45);
+  }
+  #confirm-modal .modal-card {
+    width: calc(100% - 28px);
+    max-width: 520px;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+}
+
+/* Evitar que o carrinho fique estreito demais */
+@media (max-width: 1024px) {
+  #carrinho { flex: 0 0 auto; order: 2; }
+}
+
+/* Desktop: centralizar o painel do carrinho quando visível */
+@media (min-width: 1025px) {
+  /* Tornar o carrinho uma caixa centralizada com largura fixa máxima */
+  #carrinho {
+    flex: 0 0 auto; /* não ocupar largura flexível */
+    width: min(520px, 36%);
+    max-width: 520px;
+    margin: 20px auto; /* centra horizontalmente dentro do pai */
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+  /* garantir que o main não force o alinhamento entre produtos e carrinho */
+  main { align-items: center; }
+}
+
+#carrinho h2 {
+  font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+  text-align: center;
+}
+
+#itens-carrinho {
+  font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+#itens-carrinho li {
+  font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+  border-bottom: 4px solid #ccc;
+  padding: 5px 0;
+}
+
+#finalizar {
+  width: 100%;
+  background-color: #25d366;
+  color: #fff;
+  font-size: clamp(0.95rem, 0.6vw + 0.9rem, 1.15rem);
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* ===================== */
+/* FOOTER */
+/* ===================== */
+.footer {
+  background-color: #000; /* black background */
+  color: #ffd700; /* gold text */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 25px 10px 40px 10px;
+  font-size: 0.95rem;
+}
+
+.footer-content {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* espaçamento entre cada linha */
+  align-items: center;
+}
+
+.footer p { margin: 6px 0; }
+.footer a { color: #ffd700; text-decoration: none; transition: 0.3s; }
+.footer a:hover { color: #ff4500; }
+
+.footer-copy { margin-top: 8px; font-weight: 600; color: #ccc; }
+
+.footer p, .footer a { font-size: 0.85rem; }
+
+/* mobile: centralizar textos e links do footer para evitar quebras estranhas */
+@media (max-width: 480px) {
+  .footer p, .footer a {
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+/* hero: reduzir imagem e texto principal levemente em telas muito pequenas */
+@media (max-width: 480px) {
+  .hero img { max-width: 75%; }
+  .hero-text { font-size: 0.9rem; text-shadow: 0 0 8px rgba(0,0,0,0.6); }
+  .hero { margin-bottom: 40px; }
+}
+
+
+/* ===================== TELA INICIAL (GLOBAL) ===================== */
+/* Centralizar a tela inicial em todas as larguras */
+#tela-inicial {
+  display: flex;
+  justify-content: center;   /* centraliza horizontalmente */
+  align-items: center;       /* centraliza verticalmente */
+  width: 100%;
+  /* usar valores fluidos para altura e padding para evitar quebras */
+  /* reduzir a altura mínima para evitar que a imagem de fundo ultrapasse a tela */
+  min-height: min(40vh, 900px);
+  height: auto;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: clamp(0px, 1vw, 10px);
+  /*padding: clamp(12px, 4vw, 40px)  clamp(12px, 2.5vw, 20px);
+  box-sizing: border-box;
+  overflow: hidden; /* evita elementos vazando e mostrando fundo branco */
+}
+
+/* Garantir que o background global se comporte corretamente em várias larguras de viewport */
+@media (max-width: 1200px) {
+  body {
+    /* em telas médias, a imagem ocupa menos largura para não competir com o conteúdo */
+    background-size: 34% auto;
+    background-position: center top;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    /* em tablets/phones, usar 'cover' reduzido e foco no topo para que a área de boas-vindas
+       não fique escondida atrás da imagem grande */
+    background-size: 180px auto; /* mantém uma imagem pequena e fixa */
+    background-position: center 12%;
+  }
+  /* garantir que a tela inicial não tenha excesso de altura em mobile */
+  #tela-inicial { min-height: 64vh; }
+}
+
+@media (max-width: 420px) {
+  body {
+    /* mobile: background bem pequeno para nunca ultrapassar a tela */
+    background-size: 100% 100%; /* preenche totalmente no mobile (sem deixar "vazar") */
+    background-position: center center;
+  }
+}
+
+/* Em telas pequenas: remover border-radius e reduzir padding para evitar espaços brancos nas bordas */
+@media (max-width: 600px) {
+  #tela-inicial {
+    border-radius: 0;
+    padding: clamp(10px, 4vw, 18px);
+    min-height: 70vh;
+  }
+  .inicio-conteudo { padding: clamp(0.6rem, 3vw, 1.2rem); }
+}
+
+/* Em telas médias: garantir boa distribuição sem criar gaps */
+@media (min-width: 601px) and (max-width: 900px) {
+  #tela-inicial {
+    border-radius: 8px;
+    padding: clamp(14px, 3.5vw, 32px);
+    min-height: 75vh;
+  }
+  .inicio-conteudo { width: min(94%, 820px); }
+}
+
+/* efeito de sobreposição/cortina (dentro de #tela-inicial) */
+#tela-inicial {
+  position: relative;
+  overflow: hidden;
+}
+
+#tela-inicial::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* reduzir opacidade em telas pequenas para que a imagem de fundo global fique visível por baixo */
+  /* background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.35) 100%); */
+  z-index: 1;
+  pointer-events: none;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 700ms cubic-bezier(.22,.9,.26,1), opacity 700ms cubic-bezier(.22,.9,.26,1);
+}
+
+/* quando ativo, a cortina sobe */
+#tela-inicial.active::before {
+  transform: translateY(-18%);
+  opacity: 0;
+}
+
+.inicio-conteudo {
+  /* Empilhar por padrão (imagem acima, título abaixo) e centralizar o conteúdo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 1000px; /* limita a largura do bloco de texto */
+  width: min(92%, 1000px);
+  padding: clamp(0.6rem, 1.8vw, 2rem);
+  position: relative; /* acima da sobreposição */
+  z-index: 2;
+}
+
+.hero-wrap {
+  /* Forçar tamanho compacto (estilo mobile) em todas as larguras */
+  width: 180px;
+  height: 180px;
+  aspect-ratio: 1/1; /* manter quadrado */
+  overflow: hidden;
+  margin: 0 auto 1rem auto;
+  border-radius: 50%; /* aparência circular */
+  box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+  /* anel circular amarelo ao redor da imagem */
+  border: 6px solid rgba(255,204,0,0.95);
+  background: transparent;
+}
+
+.inicio-conteudo .hero-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* preencher e cortar de forma limpa */
+  object-position: center center;
+  background: transparent;
+  -webkit-user-drag: none;
+}
+
+/* Garantir que a imagem interna fique perfeitamente circular dentro do wrapper */
+.inicio-conteudo .hero-wrap img, .inicio-conteudo .hero-img {
+  border-radius: 50%;
+  display: block;
+}
+
+/* Garantir que a hero-img participe do efeito escalonado (é o primeiro filho) */
+.inicio-conteudo.show > .hero-img { animation: fadeUp 520ms cubic-bezier(.22,.9,.26,1) 180ms both; }
+
+/* CATEGORIAS / DESTAQUES */
+.categorias {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin: 18px auto;
+  width: min(1100px, 94%);
+  align-items: stretch;
+}
+.cat-card {
+  background: #e0e0e0; /* neutral gray box */
+  border-radius: 14px;
+  padding: 24px 18px;
+  font-weight: 800;
+  color: #111; /* ensure readable contrast on gray */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease, background 180ms ease;
+  text-align: center;
+}
+.cat-card:hover, .cat-card:focus {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.18);
+  outline: none;
+}
+.cat-card:active { transform: translateY(-2px) scale(0.995); }
+
+@media (max-width: 920px) {
+  .categorias { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .categorias { grid-template-columns: 1fr; gap: 12px; }
+  .cat-card { padding: 16px; font-size: 1rem; border-radius: 10px; }
+}
+
+/* Fade-in on scroll utilities */
+.fade-item { opacity: 0; transform: translateY(12px); transition: opacity 520ms cubic-bezier(.22,.9,.26,1), transform 520ms cubic-bezier(.22,.9,.26,1); will-change: opacity, transform; }
+.fade-item.in-view { opacity: 1; transform: translateY(0); }
+
+/* small icon spacing helper (for emojis or icon fonts) */
+.ico { margin-right: 8px; font-size: 1.15em; vertical-align:middle; }
+
+
+/* Efeito de brilho dourado suave no logo - destaca o nome Chinês Lanches */
+.site-logo {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: none;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.35);  
+  left: 50%;
+  top: 30%;  
+  z-index: 10110; /* above header but below top badges (10120) */
+  display: inline-block;
+  text-align: center;
+  /* responsive size that adapts to viewport width */
+  font-size: clamp(1rem, 3.6vw, 2.2rem);
+  padding: 2px 6px;
+}
+
+.site-logo:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 150, 0.85), 0 0 30px rgba(255, 215, 0, 0.7);
+  transform: translateY(-2px) scale(1.01);
+}
+@keyframes logoSpin {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+.inicio-conteudo h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.4rem, 2.6vw + 0.2rem, 2.8rem);
+  margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.35px;
+}
+
+.inicio-conteudo p {
+  font-size: clamp(1rem, 1.2vw + 0.2rem, 1.2rem);
+  line-height: 1.5;
+}
+
+/* Modal de confirmação */
+#confirm-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10010;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 220ms ease, visibility 220ms;
+}
+
+/* Em telas mais largas, manter imagem e texto lado a lado */
+/* Em telas bem largas: colocar a imagem e o conteúdo lado a lado */
+/* Mantemos o layout mobile empilhado em todas as larguras (removido o grid em telas largas)
+   Se quiser reativar o layout lado a lado em telas grandes, posso ajustar esse breakpoint.
+*/
+#confirm-modal.active {
+  visibility: visible;
+  opacity: 1;
+}
+#confirm-modal .modal-card {
+  background: #fff;
+  color: #111;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: min(92%, 520px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+}
+#confirm-modal .modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Painel do proprietário */
+#owner-pedidos {
+  background: rgba(255,255,255,0.95);
+  color: #111;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 12px;
+}
+#owner-pedidos h2 { margin-top: 0; display:flex;align-items:center;justify-content:space-between;gap:10px; }
+
+#owner-pedidos .panel-header-actions { display:flex; gap:8px; align-items:center; }
+
+#pedidos-list { list-style: none; padding: 0; margin: 0; display:flex;flex-direction:column;gap:10px; }
+
+/* Card-style order item */
+.pedido-item {
+  background: linear-gradient(180deg, #fff, #fbfbfb);
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(20,20,20,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #eee;
+}
+.pedido-top {
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.pedido-meta { display:flex;gap:12px;align-items:center; }
+.pedido-time { font-size:0.9rem;color:#666; }
+.pedido-total { font-weight:700;color:#111;background:#fff3cd;padding:6px 10px;border-radius:8px;border:1px solid #ffeeba }
+.pedido-items { color:#333; font-size:0.95rem; }
+.pedido-address, .pedido-phone { color:#555;font-size:0.9rem }
+
+.pedido-actions { display:flex;gap:8px;align-items:center; }
+.pedido-btn { border: none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600 }
+.pedido-btn.mark-done { background: #28a745; color: #fff }
+.pedido-btn.view-whatsapp { background: #25D366; color: #fff }
+.pedido-btn.pedido-delete { background: transparent; color: #b00; border:1px solid #f3c6c6 }
+
+@media (min-width: 720px) {
+  .pedido-item { flex-direction: row; align-items: center; }
+  .pedido-main { flex: 1; }
+  .pedido-actions { flex-shrink: 0 }
+}
+
+/* Color palette and small UI polish for admin panel */
+:root {
+  --primary: #ffca28; /* yellow accent */
+  --accent: #111;     /* dark text */
+  --muted: #666;
+  --success: #28a745;
+  --wa-green: #25D366;
+}
+
+.orders-badge {
+  background: var(--primary);
+  color: var(--accent);
+  font-weight:700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  font-size: 0.9rem;
+  display:inline-block;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+}
+
+/* entrance animation for pedidos */
+.pedido-item { animation: fadeUp 360ms cubic-bezier(.22,.9,.26,1) both; }
+
+/* WA preview modal styling */
+#wa-preview-modal { display:none; position:fixed; inset:0; align-items:center; justify-content:center; z-index:11000; }
+#wa-preview-modal .card { background:#fff; color:#111; padding:16px; border-radius:12px; width:min(92%,720px); box-shadow:0 20px 60px rgba(0,0,0,0.35); }
+#wa-preview-modal textarea { width:100%; min-height:140px; border-radius:8px; padding:10px; border:1px solid #ddd; font-family:inherit; font-size:0.95rem; }
+#wa-preview-modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+
+
+/* Entrada escalonada para elementos filhos dentro de .inicio-conteudo */
+.inicio-conteudo > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.inicio-conteudo.show > *:nth-child(1) { animation: fadeUp 520ms cubic-bezier(.22,.9,.26,1) 220ms both; }
+.inicio-conteudo.show > *:nth-child(2) { animation: fadeUp 520ms cubic-bezier(.22,.9,.26,1) 380ms both; }
+.inicio-conteudo.show > *:nth-child(3) { animation: fadeUp 520ms cubic-bezier(.22,.9,.26,1) 540ms both; }
+
+
+/* ===================== */
+/* RESPONSIVO PARA CELULAR / TV */
+/* ===================== */
+@media screen and (max-width: 1024px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #produtos, #carrinho {
+    width: 95%;
+    min-height: auto;
+    margin: 10px 0;
+  }
+
+  #produtos {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* reduzir a base tipográfica global no mobile para tornar o conteúdo mais compacto */
+  html, body { font-size: 14px; }
+
+  /* Título do site maior em telas móveis pequenas */
+  h1 { font-size: clamp(1.4rem, 6.5vw, 2.1rem); }
+
+  /* manter os itens de navegação lado a lado no mobile: linha horizontal com pequenos gaps e scroll se estourar */
+  nav ul { display: flex; gap: 8px; justify-content: center; align-items: center; overflow-x: auto; padding: 6px 4px; }
+  nav ul li { display: inline-block; margin: 0; }
+  nav a { padding: 6px 10px; display: inline-block; }
+
+  /* botões ligeiramente menores para maior compactação */
+  button { padding: 0.55rem; font-size: 0.95rem; }
+
+  #tela-inicial { padding: 10px 8px; }
+
+  /* Dar mais destaque ao h2 de boas-vindas em celulares pequenos e reduzir o espaçamento inferior
+     para diminuir o gap visual entre a área de boas-vindas e o footer. */
+  .inicio-conteudo h2 {
+    font-size: clamp(1.6rem, 6.8vw, 2.6rem); /* escala fluida e maior */
+    line-height: 1.08; /* mais compacto para reduzir espaço vertical */
+    margin-bottom: 0.6rem; /* gap menor abaixo do título */
+  }
+}
+
+/* Garantir que em telas muito pequenas a tela inicial não cresça além da altura da viewport */
+@media (max-width: 480px) {
+  #tela-inicial { min-height: 58vh; }
+}
+
+/* Melhorias mobile: empilhar layout, alvos de toque maiores, espaçamento legível */
+@media screen and (max-width: 600px) {
+  /* header/nav */
+  header { text-align: center; padding: 12px 10px; }
+  /* nav lado a lado: exibir abas em linha no mobile conforme solicitado */
+  nav ul { display: flex; gap: 8px; justify-content: center; align-items: center; overflow-x: auto; padding: 6px 4px; }
+  nav ul li { display: inline-block; margin: 0; }
+
+  /* tela inicial: centralizar conteúdo e reduzir paddings */
+  #tela-inicial { padding: 12px 10px; border-radius: 0; min-height: 64vh; }
+  .inicio-conteudo { width: 100%; padding: 10px; }
+
+  /* hero: manter pequeno e centralizado */
+  .hero-wrap { width: 140px; height: 140px; margin: 0 auto 12px; border-radius: 50%; }
+
+  /* produtos: grid compacto (duas colunas quando possível) */
+  #produtos { padding: 10px; gap: 8px; justify-content: center; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .produto { width: 100%; max-width: none; margin: 0; padding: 10px; }
+
+  /* carrinho: largura total abaixo dos produtos */
+  #carrinho { width: 100%; flex: 0 0 auto; margin-top: 12px; }
+
+  /* espaçamento do footer */
+  .footer { padding: 25px 15px 40px 15px; }
+
+  /* tornar botões maiores e largura total quando apropriado */
+  #finalizar, #limpar-carrinho { width: 100%; }
+
+  /* Mobile: garantir que o background global preencha a viewport e não transborde
+     (usar 100%×100% aqui para seguir a preferência do usuário; isso pode esticar a imagem). */
+  body {
+    background-size: 100% 100% !important;
+    background-position: center center !important;
+  }
+
+  /* reduzir a altura inicial em telefones menores para evitar empurrar conteúdo para fora da tela */
+  #tela-inicial { min-height: 58vh; }
+}
+
+/* Fix: garantir que o dropdown do menu móvel receba eventos de ponteiro
+   e fique acima de botões flutuantes (carrinho, toasts) que poderiam
+   interceptar cliques. Mantemos o valor abaixo de modais administrativos
+   (ex.: #admin-pass-modal z-index:10200) para não sobrescrever overlays
+   que devem bloquear a UI quando ativos. */
+@media (max-width: 600px) {
+  header { z-index: 10120; position: relative; }
+  #hamburger-btn { z-index: 10130; }
+  header.nav-open #main-nav {
+    z-index: 10125; /* acima de toasts (10100) e botões do carrinho (10030-10040) */
+    pointer-events: auto; /* garantir que links recebam cliques */
+  }
+  header.nav-open #main-nav a { pointer-events: auto; }
+}
+
+/* Mobile-only: aumentar contraste do carrinho e legibilidade */
+@media screen and (max-width: 600px) {
+  /* Tornar o fundo do carrinho um pouco mais escuro e o texto de alto contraste */
+  #carrinho {
+    background-color: #ffd84d; /* amarelo mais rico */
+    color: #050505; /* quase preto para melhor contraste */
+    font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif; /* fonte mais clara para o carrinho mobile */
+    padding: 14px; /* aumentar padding para legibilidade */
+  }
+
+  /* Cabeçalho/título do carrinho */
+  #carrinho h2 {
+    color: #050505;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.2px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* Itens do carrinho: maiores e mais claros */
+  #itens-carrinho {
+    color: #111;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  #itens-carrinho li {
+    border-bottom: 2px solid rgba(0,0,0,0.12);
+    padding: 8px 6px;
+  }
+
+  /* Nome do item do carrinho: fonte e peso mais claros */
+  .cart-item-name {
+    display: block;
+    font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 700;
+    color: #050505;
+    margin-bottom: 6px;
+  }
+
+  /* Total: destacar */
+  #total {
+    font-weight: 900;
+    color: #050505;
+    font-size: 1.02rem;
+    margin-top: 10px;
+  }
+
+  /* Botões: contraste mais forte */
+  #finalizar { background-color: #128c4a; color: #fff; font-weight: 800; }
+  #limpar-carrinho { background-color: #333; color: #fff; font-weight: 700; }
+
+  /* Garantir bons alvos de toque */
+  #carrinho button, #carrinho .cart-qty button { padding: 12px 10px; font-size: 1rem; }
+}
+
+/* Correção: garantir que a nav do header e seus itens fiquem totalmente visíveis em telas pequenas/móveis */
+@media screen and (max-width: 600px) {
+  /* Garantir que o container da nav não corte os itens e permita rolagem horizontal */
+  header nav { overflow: visible; }
+
+  /* Manter a nav como uma linha horizontal rolável, permitindo que itens encolham e não quebrem no meio da palavra.
+     Isso evita que 'Cachorros Quentes' seja cortado visualmente, mantendo área de toque adequada. */
+  nav ul {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start; /* permitir rolagem horizontal */
+    align-items: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 8px;
+  }
+
+  nav a {
+    white-space: nowrap; /* manter cada rótulo em uma única linha */
+    text-overflow: ellipsis; /* se precisar cortar, mostrar reticências */
+    max-width: 10rem; /* limitar largura para que rótulos muito longos não empurrem os outros para fora da tela */
+    display: inline-block;
+    font-weight: 600; /* deixar as abas mais visíveis */
+    font-size: 0.98rem;
+    padding: 8px 10px;
+  }
+
+  /* Normalizar espaçamento da nav para que todos os itens tenham padding igual no mobile */
+  nav ul li { padding: 0 4px; }
+
+  /* Garantir que o link 'Início' permaneça visível e com margem esquerda suficiente em telas muito pequenas */
+  nav ul li:first-child { margin-left: 6px; }
+
+  /* Ocultar a aba do carrinho no header em mobile (usamos o botão flutuante #mobile-cart-toggle) */
+  .menu-item[data-category="carrinho"] { display: none !important; }
+}
+
+@media screen and (max-width: 360px) {
+  .hero-wrap { width: 120px; height: 120px; }
+  /* em celulares muito pequenos, manter o h2 legível, ajustando-o para ser um pouco maior */
+  .inicio-conteudo h2 { font-size: clamp(1.3rem, 5.2vw, 1.9rem); line-height: 1.06; margin-bottom: 0.5rem; }
+  .inicio-conteudo p { font-size: 0.95rem; }
+
+  /* reduzir a min-height da tela inicial ligeiramente para evitar grande espaço vazio em telas baixas */
+  #tela-inicial { min-height: 52vh; }
+}
+
+/* Carrinho mobile: transformar em painel inferior recolhível para economizar espaço */
+@media (max-width: 600px) {
+  /* botão toggle visível apenas em telas pequenas */
+  #mobile-cart-toggle { display: flex; }
+  /* botão flutuante do toggle */
+  #mobile-cart-toggle {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 10030;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+    border: none;
+  }
+  #mobile-cart-toggle[data-count]:after {
+    content: attr(data-count);
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+  #mobile-cart-toggle[data-count="0"]:after { display: none; }
+
+  /* carrinho recolhido fica na parte inferior deixando uma pequena alça visível */
+  #carrinho {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+    /* ocultar completamente fora da tela por padrão para que apenas o ícone apareça */
+    transform: translateY(100%);
+    transition: transform 320ms cubic-bezier(.22,.9,.26,1);
+    border-radius: 12px;
+    z-index: 10020;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    overflow: hidden;
+    /* manter escondido por padrão; será exibido apenas quando .mobile-open for aplicado */
+    display: none; /* escondido até o usuário abrir o carrinho */
+  }
+
+  /* estado aberto: deslizar para cima para revelar o carrinho completo */
+  #carrinho.mobile-open {
+    transform: translateY(0);
+    display: block; /* mostrar quando estiver no estado aberto */
+    max-height: 72vh;
+    overflow: auto;
+  }
+
+  /* tornar o cabeçalho do carrinho compacto quando recolhido */
+  #carrinho h2 { margin: 0; padding: 12px; font-size: 0.95rem; }
+  #itens-carrinho { max-height: 46vh; overflow: auto; }
+
+  /* garantir que os botões finalizar/limpar sejam visíveis e tenham largura total */
+  #carrinho .modal-actions, #carrinho > div { display: block; }
+  #finalizar, #limpar-carrinho { width: 100%; box-sizing: border-box; }
+
+  /* botão de fechar do carrinho mobile (oculto por padrão; mostrado quando o carrinho está aberto) */
+  #mobile-cart-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    z-index: 10040;
+    width: 40px;
+    height: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .hero-wrap { width: 120px; height: 120px; }
+  /* on very small phones, keep the h2 still readable but a bit larger than before */
+  .inicio-conteudo h2 { font-size: clamp(1.3rem, 5.2vw, 1.9rem); line-height: 1.06; margin-bottom: 0.5rem; }
+  .inicio-conteudo p { font-size: 0.95rem; }
+
+  /* reduce the initial-screen min-height slightly to avoid large empty space on short screens */
+  #tela-inicial { min-height: 52vh; }
+}
+
+/* Mobile cart: make it a collapsible bottom panel to save espaço */
+@media (max-width: 600px) {
+  /* mobile toggle visible only on small screens */
+  #mobile-cart-toggle { display: flex; }
+  /* floating toggle button */
+  #mobile-cart-toggle {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 10030;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+    border: none;
+  }
+  #mobile-cart-toggle[data-count]:after {
+    content: attr(data-count);
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+  #mobile-cart-toggle[data-count="0"]:after { display: none; }
+
+  /* collapsed cart sits at bottom leaving a small handle visible */
+  #carrinho {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+    /* fully hide off-screen by default so only the icon shows */
+    transform: translateY(100%);
+    transition: transform 320ms cubic-bezier(.22,.9,.26,1);
+    border-radius: 12px;
+    z-index: 10020;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    overflow: hidden;
+    /* keep hidden by default; will be shown when .mobile-open is present */
+    display: none;
+  }
+
+  /* open state: slide up to reveal full cart */
+  #carrinho.mobile-open {
+    transform: translateY(0);
+    display: block;
+    max-height: 72vh;
+    overflow: auto;
+  }
+
+  /* make cart header compact when collapsed */
+  #carrinho h2 { margin: 0; padding: 12px; font-size: 0.95rem; }
+  #itens-carrinho { max-height: 46vh; overflow: auto; }
+
+  /* ensure finalizar/limpar buttons are visible and full width */
+  #carrinho .modal-actions, #carrinho > div { display: block; }
+  #finalizar, #limpar-carrinho { width: 100%; box-sizing: border-box; }
+
+  /* mobile cart close button (hidden by default; shown when cart is open) */
+  #mobile-cart-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    z-index: 10040;
+    width: 40px;
+    height: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+/* Compact product cards on small screens: smaller images, tighter padding and two-column grid */
+@media screen and (max-width: 600px) {
+  /* Mobile: single-column grid, more padding inside cards and responsive images */
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  #produtos { padding: 8px; }
+
+  .produto {
+    padding: 14px; /* aumentar padding interno no mobile para melhor toque */
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.16);
+    transition: none; /* disable hover scale on mobile for stable layout */
+  }
+
+  /* keep images constrained to a short, consistent height for quick scanning */
+  .produto img {
+    width: 100%;
+    height: auto; /* manter proporção real da imagem */
+    object-fit: cover;
+    border-radius: 8px;
+    max-height: 260px; /* limite para evitar imagens gigantes em alguns casos */
+  }
+
+  .produto h3 { font-size: 0.95rem; margin: 4px 0 0; line-height: 1.15; }
+  .produto p { font-size: 0.82rem; color: #333; margin: 4px 0 0; max-height: 2.6em; overflow: hidden; text-overflow: ellipsis; }
+  .produto p + p { font-weight: 700; color: #111; margin-top: 6px; }
+
+  /* buttons: smaller, side-by-side, full width of the card */
+  .produto button.adicionar, .produto button.remover {
+    padding: 8px 10px;
+    font-size: 0.92rem;
+    border-radius: 8px;
+    width: 48%;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  .produto button.adicionar { background: #0f8b4a; color: #fff; border: none; box-shadow: 0 6px 16px rgba(15,139,74,0.12); }
+  .produto button.adicionar:hover, .produto button.adicionar:focus { background: #0b6a3a; }
+  .produto button.remover { background: #f0f0f0; color: #222; border: 1px solid rgba(0,0,0,0.06); }
+  .produto button.remover:hover, .produto button.remover:focus { background: #e6e6e6; }
+
+  /* avoid hover transform on touch devices to prevent accidental layout shifts */
+  .produto:hover { transform: none; box-shadow: 0 6px 12px rgba(0,0,0,0.16); }
+}

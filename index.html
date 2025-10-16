@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chinês Lanches</title>
+  <!-- Google Fonts: Poppins (body) + Playfair Display (titles) -->
+  <!-- Favicon / shared image -->
+  <link rel="icon" type="image/png" href="chinez-removebg-preview.png">
+  <meta name="theme-color" content="#111">
+  <meta property="og:image" content="chinez-removebg-preview.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Premium serif for the site logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Splash screen for entrance animation -->
+  <div id="splash">
+    <h1 class="splash-title">Chinês Lanches</h1>
+  </div>
+  <!-- ===================== HEADER ===================== -->
+  <header>
+  <h1 class="site-logo">Chinês Lanches</h1>
+  <!-- Desktop status badge (visible on larger screens) -->
+  <div id="status-badge-desktop" class="status-badge" aria-live="polite">⏳ Verificando...</div>
+  <!-- Mobile status badge (visible on small screens) -->
+  <div id="status-badge-mobile" class="status-badge" aria-hidden="false">⏳ Verificando...</div>
+    <!-- Mobile hamburger button: aparece só em telas pequenas -->
+    <button id="hamburger-btn" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menu" title="Menu">
+      <span class="hamburger-lines" aria-hidden="true"></span>
+    </button>
+    <nav>
+      <ul id="main-nav">
+        <li><a href="#" class="menu-item" data-category="inicio">Início</a></li>
+        <li><a href="#" class="menu-item" data-category="cachorro">Cachorros Quentes</a></li>
+        <li><a href="#" class="menu-item" data-category="macarronada">Macarronadas</a></li>
+        <li><a href="#" class="menu-item" data-category="batatas">Batatas</a></li>
+        <li><a href="#" class="menu-item" data-category="bebidas">Bebidas</a></li>        
+        <li><a href="#" class="menu-item" data-category="carrinho">🛒</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===================== MAIN ===================== -->
+  <main>
+    <!-- Tela inicial com mensagem de boas-vindas (hero/banner) -->
+    <section id="tela-inicial" class="hero">
+      <div class="inicio-conteudo">
+        <h1>Seja bem-vindo ao Chinês Lanches!</h1>
+        <p>🔥 "Lanches irresistíveis, preparados com o toque especial do Chinês."</p>
+  <a id="ver-cardapio" href="#produtos" class="btn-hero">Ver Cardápio</a>
+      </div>
+    </section>
+
+    <!-- Destaques / Categorias (atalhos clicáveis) -->
+    <section id="categorias" class="categorias" style="display:none;">
+      <div class="cat-card" data-category="cachorro"><span class="ico">🌭</span> Cachorros Quentes</div>
+      <div class="cat-card" data-category="macarronada"><span class="ico">🍝</span> Macarronadas</div>
+      <div class="cat-card" data-category="batatas"><span class="ico">🍟</span> Batatas</div>
+      <div class="cat-card" data-category="bebidas"><span class="ico">🥤</span> Bebidas</div>
+    </section>
+
+    <!-- Produtos (inicialmente ocultos) -->
+    <section id="produtos" style="display:none;"></section>
+
+    <!-- Carrinho (inicialmente oculto) - layout melhorado, IDs mantidos para script.js -->
+    <aside id="carrinho" style="display:none;">
+      <button id="mobile-cart-close" aria-label="Fechar carrinho" title="Fechar" type="button">✕</button>
+      <div class="cart-container">
+        <h2>🛒 Seu Carrinho</h2>
+
+        <div class="cart-body">
+          <ul id="itens-carrinho"></ul>
+          <p>Total: <span id="total" class="cart-total">R$ 0,00</span></p>
+          <div class="cart-actions">
+            <button id="limpar-carrinho" class="btn-clear">
+              🗑️ Limpar Carrinho
+            </button>
+            <button id="finalizar" class="btn-whatsapp">
+              🟢 Finalizar Pedido no WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <div class="trust-info">
+          🔒 Pagamento 100% seguro via WhatsApp
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Painel do proprietário (aparece quando houver pedidos) -->
+    <aside id="owner-pedidos" style="display:none;">
+      <h2>Pedidos recebidos <span id="orders-badge" class="orders-badge" style="display:none">0</span></h2>
+      <ul id="pedidos-list"></ul>
+    </aside>
+    
+  <!-- Relatórios de vendas (Painel Administrativo melhorado) -->
+  <section id="relatorios" class="readable-panel admin-panel" role="region" aria-label="Painel administrativo de relatórios" style="display:none; max-width:980px; margin:0 auto;">
+    <header class="admin-header">
+      <h2>Relatórios de Vendas</h2>
+      <p class="admin-sub">Visão consolidada das vendas, exportações e histórico.</p>
+    </header>
+
+    <div class="admin-toolbar">
+      <div class="filters">
+        <label for="rel-mode" class="label-inline">Modo</label>
+        <select id="rel-mode" class="input-small">
+          <option value="month">Mensal</option>
+          <option value="day">Diário</option>
+        </select>
+
+        <label for="rel-month" class="label-inline">Mês</label>
+        <input id="rel-month" type="month" class="input-medium" />
+
+        <label for="rel-day" class="label-inline" style="display:none;">Dia</label>
+        <input id="rel-day" type="date" class="input-medium" style="display:none;" />
+
+        <button id="rel-generate" class="btn primary">Gerar</button>
+      </div>
+
+      <div class="actions">
+        <input id="rel-search" type="search" placeholder="Buscar por item, id ou data" class="input-search" aria-label="Buscar no relatório" />
+        <div class="exports">
+          <button id="rel-export-csv" class="btn">CSV</button>
+          <button id="rel-export-detailed-csv" class="btn">CSV Detalhado</button>
+          <button id="rel-export-xlsx" class="btn">XLSX</button>
+          <button id="rel-export-detailed-xlsx" class="btn">XLSX Detalhado</button>
+        </div>
+        <button id="rel-clear-history" class="btn danger" title="Limpar histórico de vendas">Limpar histórico</button>
+      </div>
+    </div>
+
+    <div id="rel-results" class="admin-results">
+      <div class="rel-summary">
+        <p id="rel-total" class="rel-total">Total vendido: R$ 0,00</p>
+      </div>
+
+      <section class="rel-table-wrap" aria-live="polite">
+        <h3>Itens vendidos</h3>
+        <div id="rel-table-container" class="table-scroll" aria-hidden="false">
+          <!-- Mantemos o container para compatibilidade com script.js; o script pode injetar uma tabela aqui -->
+          <table id="rel-table" class="rel-table" aria-describedby="rel-total">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>ID</th>
+                <th>Itens</th>
+                <th class="col-right">Total</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="rel-table-body">
+              <!-- preenchido dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div id="rel-chart" class="rel-chart">
+        <canvas id="rel-chart-canvas" height="120"></canvas>
+      </div>
+
+      <section class="rel-history-wrap">
+        <h3>Histórico de vendas</h3>
+        <div id="rel-history" class="rel-history"></div>
+        <div id="rel-pagination" class="rel-pagination" aria-label="Paginação de histórico"></div>
+      </section>
+
+      <div id="rel-webhook" class="rel-webhook">
+        <input id="rel-webhook-url" type="url" placeholder="Webhook URL (opcional)" class="input-full" />
+        <button id="rel-send-webhook" class="btn">Enviar para planilha</button>
+        <button id="rel-config-pass" class="btn" title="Configurar senha administrativa">Configurar senha</button>
+      </div>
+
+      <div class="rel-controls">
+        <label class="label-inline"><input id="rel-autosync" type="checkbox" /> Auto-sync</label>
+        <label class="label-inline">Intervalo (min): <input id="rel-autosync-interval" type="number" min="1" value="15" class="input-small" /></label>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+  <div class="footer-content">
+    <p>📍 Rua 8B, Qd 8B, 21 - Cidade Operária</p>
+    <p>🕓 Segunda a Domingo: 18h às 23h</p>
+    <p>📞 WhatsApp: <a href="https://wa.me/559885814695" target="_blank">(98) 9 8581-4695</a></p>
+    <p>📸 Instagram: <a href="https://instagram.com/chinezlanches" target="_blank">@chinezlanches</a></p>
+  </div>
+  <p class="footer-copy">© 2025 Chinês Lanches — Tradição e sabor em cada mordida!</p>
+</footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX) for reliable Excel exports with proper UTF-8 support -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <!-- Development: load optional config.dev.js (created by serve-dev.ps1). Do NOT commit config.dev.js to
+    a public repository. If the file is absent, the app falls back to default runtime values. -->
+  <script src="config.dev.js"></script>
+  <script src="script.js"></script>
+  <!-- toast notifications -->
+  <div id="toast" aria-live="polite" aria-atomic="true"></div>
+  <!-- Admin password modal (used to protect deletions) -->
+  <div id="admin-pass-modal" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;z-index:10200;">
+    <div style="background:#111;color:#fff;padding:18px;border-radius:10px;min-width:280px;box-shadow:0 10px 30px rgba(0,0,0,0.6);">
+      <h3 style="margin:0 0 8px 0;">Autenticação requerida</h3>
+      <p style="margin:0 0 8px 0;color:#ddd;font-size:0.95rem">Informe a senha administrativa para confirmar esta ação.</p>
+      <input id="admin-pass-input" type="password" placeholder="Senha" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;margin-bottom:10px;" />
+      <div style="display:flex;gap:8px;justify-content:flex-end;"><button id="admin-pass-cancel">Cancelar</button><button id="admin-pass-confirm">Confirmar</button></div>
+    </div>
+  </div>
+</body>
+</html>
